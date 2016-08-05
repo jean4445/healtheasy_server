@@ -1,0 +1,11 @@
+{
+  "name"         : "server",
+  "version"      : "0.0.1",
+  "private"      : true,
+  "dependencies" : {
+    "express"    : "*",
+    "mongodb"   : "*",
+    "moment" 	: "*",
+	"md5"       : "^2.0.0"
+  }
+}
