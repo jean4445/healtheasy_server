@@ -57,5 +57,64 @@ app.get('/api/insert', function(request, response) {
 		}
 	});
 });
+app.get('/api/query',function(request,reponse){
+	var item = {
+	account : request.query.account,
+	password :md5(request.query.password),
+	}
+	var collection = myDB.collection('user_data');
+	collection.find({account : request.query.account}, {password: 1,name: 1}).toArray(function(err,docs){
+		if (err) {
+			response.status(406).send(err).end();
+		} else {
+			response.type('application/json');
+			response.status(200).send(docs).end();
+		}
+	});
+	
+});
+
+app.get('/api/checkaccount', function(request, response) {
+	var item = {
+	 account : request.query.account
+	}
+	var collection = myDB.collection('user_data');
+	collection.find({account: request.query.account} , {account:1}).toArray(function(err, docs) {
+		if (err) {
+			response.status(406).send(err).end();
+		} else {
+			var jsArray = new Array();
+            var jsArray = docs; 
+            var docs2 = []; 
+            for(var i = 0; i < jsArray.length; i++){
+                var jsObj = Object();
+                var jsObj = jsArray[i];
+            if(jsObj.account != " " && jsObj.account !=""){
+					docs2 += jsObj.account;
+                }
+                }  
+ 
+             if(docs2.length == 0)
+             { 
+
+            st = [{
+            	account : "0"
+            }]
+            response.type('application/json');
+			response.status(200).send(st).end();
+			
+             }
+           
+             else{
+             	st2 = [{
+             		account : "1"
+             	}]
+			        response.type('application/json');
+			        response.status(200).send(st2).end();
+                 }
+		}
+	});
+});
+
 
 app.listen(process.env.PORT||5000);
